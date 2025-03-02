@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon</title>
     <style>
         .container {
@@ -101,12 +102,6 @@
         }, { once: true });
 
         textBox.addEventListener('click', handleClick);
-        textBox.addEventListener('click', () => {
-            if (music.paused) {
-                music.play();
-            }
-        });
-        
 
         [gifs.second, gifs.third].forEach(url => {
             new Image().src = url;
