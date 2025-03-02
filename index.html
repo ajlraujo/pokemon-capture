@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokémon</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        #gifImage {
+            cursor: pointer;
+            max-width: 350px;
+            transform: scale(1.1) translateY(-15%);
+            margin-bottom: -150px;
+        }
+        #textBox {
+            max-height: 450px;
+            transform: translateY(-25%);
+        }
+        #backgroundMusic {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="gifImage" src="assets/1.gif">
+        <img id="textBox" src="assets/textBox1.gif">
+        <audio id="backgroundMusic" loop muted>
+            <source src="assets/ost.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+        const imgElement = document.getElementById('gifImage');
+        const textBox = document.getElementById('textBox');
+        const music = document.getElementById('backgroundMusic');
+
+        window.addEventListener('load', () => {
+            music.play().catch(error => {
+                console.log('Reprodução automática bloqueada: ' + error);
+            });
+        });
+
+        const gifs = {
+            first: 'assets/1.gif',
+            second: 'assets/2.gif',
+            third: 'assets/3.gif'
+        };
+
+        const text = {
+            first: 'assets/textBox1.gif',
+            second: 'assets/textBox2.gif',
+            third: 'assets/textBox3.gif'
+        }
+
+        let currentState = 'first';
+
+        function handleClick() {
+            switch(currentState) {
+                case 'first':
+                    imgElement.src = gifs.second;
+                    textBox.src = text.second;
+                    currentState = 'transitioning';
+
+                    setTimeout(() => {
+                        imgElement.src = gifs.third;
+                        textBox.src = text.third;
+                        currentState = 'third';
+                    }, getGifDuration (gifs.second, text.second));
+                    break;
+
+                case 'third':
+                    imgElement.src = gifs.first;
+                    textBox.src = text.first;
+                    currentState = 'first';
+                    break;
+            }
+        }
+
+        function preloadAssets() {
+            Object.values(gifs).forEach(url => {
+                new Image().src = url;
+            });
+
+            Object.values(text).forEach(url => {
+                new Image().src = url;
+            })
+        }
+
+        function getGifDuration(gifPath) {
+            return 1500; 
+        }
+
+        document.addEventListener('click', () => {
+            music.muted = false;
+            music.play();
+        }, { once: true });
+
+        textBox.addEventListener('click', handleClick);
+        textBox.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+            }
+        });
+        
+
+        [gifs.second, gifs.third].forEach(url => {
+            new Image().src = url;
+        });
+    </script>
+</body>
+</html>
