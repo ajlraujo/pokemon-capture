@@ -31,7 +31,7 @@
             width: 100%;
             margin: 0 auto;
         }
-        #backgroundMusic {
+        #backgroundMusic, #cry {
             display: none;
         }
         
@@ -53,16 +53,25 @@
         <audio id="backgroundMusic" loop muted>
             <source src="assets/ost.mp3" type="audio/mpeg">
         </audio>
+        <audio id="cry">
+            <source src="assets/cry.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <script>
         const imgElement = document.getElementById('gifImage');
         const textBox = document.getElementById('textBox');
         const music = document.getElementById('backgroundMusic');
+        const cry = document.getElementById('cry');
+
+        music.volume = 0.1;
+        cry.volume = 0.5;
+        music.playbackRate = 0.85;
+        cry.playbackRate = 0.75;
 
         window.addEventListener('load', () => {
             music.play().catch(error => {
-                console.log('Reprodução automática bloqueada: ' + error);
+            console.log('Reprodução automática bloqueada: ' + error);
             });
         });
 
@@ -86,6 +95,7 @@
                     imgElement.src = gifs.second;
                     textBox.src = text.second;
                     currentState = 'transitioning';
+                    cry.play();
 
                     setTimeout(() => {
                         imgElement.src = gifs.third;
